@@ -1,20 +1,20 @@
-import './App.css';
-import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
-import { Routes, Route } from "react-router-dom"
-import Navbar from './layout/Navbar';
-import Home from './pages/Home';
-import { Login } from './pages/Login';
+// import { useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import Login from "./pages/Login/Login";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import "./App.css";
 
 function App() {
+  // const [count, setCount] = useState(0)
+
   return (
     <>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
+        {["/", "/login"].map((path) => (
+          <Route key={path} path={path} element={<Login />} />
+        ))}
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
-      {/* <Navbar />
-      <Login />
-      <Home /> */}
     </>
   );
 }
