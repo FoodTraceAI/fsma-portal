@@ -14,6 +14,9 @@ interface AuthContextType {
   setAuth: React.Dispatch<React.SetStateAction<AuthState>>;
 }
 
+/* This code snippet is creating a context in React using the `createContext` function. The
+`createContext` function is used to create a context object, which consists of two parts: the
+context itself and a provider component. */
 const AuthContext = createContext<AuthContextType>({
   auth: defaultAuth,
   setAuth: () => {},
