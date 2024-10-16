@@ -33,6 +33,7 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // navigate("/dashboard");
     try {
       const res = await axios.post(
         LOGIN_URL,
@@ -41,7 +42,7 @@ const Login = () => {
           headers: {
             "Content-Type": "application/json",
           },
-        },
+        }
       );
       console.log(JSON.stringify(res.data));
       const accessToken = res?.data?.accessToken;
@@ -70,34 +71,36 @@ const Login = () => {
   return (
     <div className="login">
       <section>
-        <p
-          ref={errRef}
-          className={err ? "errmsg" : "offscreen"}
-          aria-live="assertive"
-        >
-          {err}
-        </p>
-        <h1>Login</h1>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            id="email"
-            ref={emailRef}
-            autoComplete="off"
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-            required
-          />
-          <input
-            type="password"
-            id="password"
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-            required
-          />
-          <button>Login</button>
-          <p>Don't have an account? <a href="/register" id="reg-link">Register</a></p>
-        </form>
+        <div className="form-container">
+          <p
+            ref={errRef}
+            className={err ? "errmsg" : "offscreen"}
+            aria-live="assertive"
+          >
+            {err}
+          </p>
+          <h1>Login</h1>
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              id="email"
+              ref={emailRef}
+              autoComplete="off"
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+              required
+            />
+            <input
+              type="password"
+              id="password"
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              required
+            />
+            <button>Login</button>
+            {/* <p>Don't have an account? <a href="/register" id="reg-link">Register</a></p> */}
+          </form>
+        </div>
       </section>
     </div>
   );
