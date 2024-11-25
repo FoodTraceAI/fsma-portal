@@ -1,7 +1,6 @@
 import { createContext, useState, ReactNode } from "react";
 import { AuthState } from "../types/types";
 
-
 const defaultAuth = {
   email: "",
   password: "",

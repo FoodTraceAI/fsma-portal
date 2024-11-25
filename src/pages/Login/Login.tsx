@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { AxiosError } from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import useAuth from "../../hooks/useAuth";
 import axios from "../../api/axios";
@@ -17,6 +17,8 @@ const Login = () => {
   const emailRef = useRef<HTMLInputElement>(null);
   const errRef = useRef<HTMLParagraphElement>(null);
   const navigate = useNavigate();
+  const locate = useLocation();
+  const from = locate.state?.from || { pathname: "/dashboard" };
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -42,7 +44,7 @@ const Login = () => {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
       console.log(JSON.stringify(res.data));
       const accessToken = res?.data?.accessToken;
@@ -51,7 +53,8 @@ const Login = () => {
       setAuth({ email, password, accessToken, refreshToken });
       setEmail("");
       setPassword("");
-      navigate("/dashboard");
+      // navigate("/dashboard");
+      navigate(from, { replace: true });
     } catch (err) {
       const error = err as AxiosError;
       if (!error.response) {

@@ -1,4 +1,12 @@
 import { useNavigate, useLocation } from "react-router-dom";
+import {
+  LuPackage,
+  LuPackageSearch,
+  LuPackageCheck,
+  LuFileSpreadsheet,
+  LuSettings,
+} from "react-icons/lu";
+import { TbNotes } from "react-icons/tb";
 import "./Navbar.css";
 
 const Navbar = () => {
@@ -13,11 +21,11 @@ const Navbar = () => {
           className="nav-item"
           onClick={() => {
             navigate("/dashboard");
-            // console.log(location.pathname);
           }}
           id={location.pathname === "/dashboard" ? "active" : ""}
         >
-          Arriving Shipments
+          <LuPackage />
+          <span>Arriving Shipments</span>
         </li>
         <li
           className="nav-item"
@@ -26,7 +34,8 @@ const Navbar = () => {
           }}
           id={location.pathname === "/dashboard/tcte" ? "active" : ""}
         >
-          Transformation CTE
+          <LuPackageSearch />
+          <span>Transformation CTE</span>
         </li>
         <li
           className="nav-item"
@@ -35,7 +44,8 @@ const Navbar = () => {
           }}
           id={location.pathname === "/dashboard/scte" ? "active" : ""}
         >
-          Shipping CTE
+          <LuPackageCheck />
+          <span>Shipping CTE</span>
         </li>
         <li
           className="nav-item"
@@ -44,7 +54,8 @@ const Navbar = () => {
           }}
           id={location.pathname === "/dashboard/ss" ? "active" : ""}
         >
-          Spreadsheet
+          <LuFileSpreadsheet />
+          <span>Spreadsheet</span>
         </li>
         <li
           className="nav-item"
@@ -53,7 +64,8 @@ const Navbar = () => {
           }}
           id={location.pathname === "/dashboard/tp" ? "active" : ""}
         >
-          Traceability Plan
+          <TbNotes />
+          <span>Traceability Plan</span>
         </li>
         <li
           className="nav-item"
@@ -62,7 +74,8 @@ const Navbar = () => {
           }}
           id={location.pathname === "/dashboard/settings" ? "active" : ""}
         >
-          Settings
+          <LuSettings />
+          <span>Settings</span>
         </li>
       </ul>
     </div>

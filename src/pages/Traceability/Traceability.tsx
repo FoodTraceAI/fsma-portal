@@ -1,4 +1,4 @@
-import './Traceability.css'
+import "./Traceability.css";
 
 const Traceability = () => {
   return (
@@ -75,12 +75,12 @@ const Traceability = () => {
         </div>
       </div>
       {/* <p className='creation'>Date & Time Created: <span className='td-exacts'>July 22, 2024 8AM</span></p> */}
-      <footer className='creation-footer'>
+      <footer className="creation-footer">
         Date & Time Created:
         <span className="td-exacts">July 22, 2024 8AM</span>
       </footer>
     </div>
   );
-}
+};
 
-export default Traceability
+export default Traceability;

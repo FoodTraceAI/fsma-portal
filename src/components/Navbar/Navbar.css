@@ -11,6 +11,9 @@
   h1 {
     margin: 2rem 1rem;
   }
+
+  overflow-y: hidden;
+  overflow-x: auto;
 }
 
 .nav-list {

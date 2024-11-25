@@ -10,14 +10,13 @@ import Spreadsheet from "./pages/Spreadsheet/Spreadsheet";
 import Traceability from "./pages/Traceability/Traceability";
 
 function App() {
-  // const [count, setCount] = useState(0)
   const location = useLocation();
 
   return (
     <div className="App">
-      {location.pathname !== "/" && location.pathname !== "/login" && "/login/" && (
-        <Navbar />
-      )}
+      {location.pathname !== "/" &&
+        location.pathname !== "/login" &&
+        location.pathname !== "/login/" && <Navbar />}
       <Routes>
         {["/", "/login"].map((path) => (
           <Route key={path} path={path} element={<Login />} />

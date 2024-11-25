@@ -49,8 +49,9 @@
   flex-direction: column;
   width: 48%;
   text-align: center;
-  select, input {
-    width: 13rem; 
+  select,
+  input {
+    width: 13rem;
     height: 2rem;
     border: solid 1px #ababab;
     border-radius: 5px;
@@ -58,7 +59,7 @@
   }
 
   input {
-    margin-left: -0.1rem
+    margin-left: -0.1rem;
   }
 }
 
@@ -71,7 +72,7 @@
   /* margin-left: 5rem; */
   cursor: pointer;
   width: 50%;
-  position:relative;
+  position: relative;
   left: 23%;
   margin-bottom: 1rem;
 }

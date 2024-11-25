@@ -1,6 +1,45 @@
-import './Spreadsheet.css'
+// import axios from '../../api/axios';
+import { axiosPrivate } from "../../api/axios";
+import { isAxiosError } from "../../api/axios";
+import { useNavigate, useLocation } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
+
+import "./Spreadsheet.css";
 
 const Spreadsheet = () => {
+  const auth = useAuth().auth;
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleSubClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    try {
+      const res = await axiosPrivate.get("/spreadsheet/cte?which=receive", {
+        headers: { Authorization: `Bearer ${auth?.accessToken}` },
+        responseType: "blob",
+      });
+      const href = URL.createObjectURL(res.data);
+
+      const link = document.createElement("a");
+      link.href = href;
+      link.setAttribute("download", "CTE-Receive.xlsx");
+      document.body.appendChild(link);
+      link.click();
+
+      // clean up "a" element & remove ObjectURL
+      document.body.removeChild(link);
+      URL.revokeObjectURL(href);
+    } catch (err) {
+      console.log(err);
+      if (
+        isAxiosError(err) &&
+        (err.response?.status === 401 || err.response?.status === 403)
+      ) {
+        navigate("/login", { state: { from: location }, replace: true });
+      }
+    }
+  };
+
   return (
     <div className="base">
       <div className="ss-form-container">
@@ -54,13 +93,13 @@ const Spreadsheet = () => {
               <input type="date" id="to-date" name="to-date" />
             </div>
           </div>
-          <button type="submit" className="ss-submit">
+          <button type="submit" onClick={handleSubClick} className="ss-submit">
             Generate
           </button>
         </form>
       </div>
     </div>
   );
-}
+};
 
-export default Spreadsheet
+export default Spreadsheet;

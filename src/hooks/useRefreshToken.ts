@@ -13,8 +13,6 @@ const useRefreshToken = () => {
       // {withCredentials: true}
     );
 
-    console.log(res.data);
-
     /* The `setAuth` function is being called with a callback function that takes the previous
     `AuthState` as an argument and returns a new `AuthState` object. Inside the callback function:
     1. The spread operator `...prev` is used to copy all the properties from the previous
