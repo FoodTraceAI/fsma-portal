@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8080/api/v1";
+// const BASE_URL = "http://localhost:8080/api/v1";
+const BASE_URL = import.meta.env.VITE_API_URL;
+console.log("BASE_URL: ", BASE_URL);
 
 /* This code snippet is creating an Axios instance with a base URL of "http://localhost:8080/api/v1"
 and exporting it as the default export of the module. This allows other parts of the codebase to
