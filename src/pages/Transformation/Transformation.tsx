@@ -4,8 +4,10 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { isAxiosError } from "../../api/axios";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useAuth from "../../hooks/useAuth";
-import { cteReceive } from "../../types/types";
-import { CanceledError } from "axios";
+import { receivingShipment } from "../../types/types";
+// import { CanceledError } from "axios";
+import Cookies from "js-cookie"; // [ ]: when httpOnly
+import SupShipView from "../../components/ViewPop/SupShipView";
 
 const Transformation = () => {
   const auth = useAuth().auth;
@@ -15,7 +17,10 @@ const Transformation = () => {
 
   // const [location, setLocation] = useState<string[]>([]);
   // const [length, setLength] = useState<number>(0);
-  const [cteRec, setCteRec] = useState<cteReceive[]>([]);
+  // const [cteRec, setCteRec] = useState<cteReceive[]>([]);
+  const [receivingShipment, setRecShip] = useState<receivingShipment[]>([]);
+  const [viewPop, setViewPop] = useState(false);
+  const [selectedShip, setSelectedShip] = useState<receivingShipment | null>(null);
 
   useEffect(() => {
     let isMounted = true;
@@ -23,39 +28,22 @@ const Transformation = () => {
 
     const getData = async () => {
       try {
-        let res = await axiosPrivate.get("/cte/receive/1", {
-          headers: { Authorization: `Bearer ${auth?.accessToken}` },
-          signal: controller.signal,
-        });
-
+        const res = await axiosPrivate.get(
+          `/portal/receivedshipments?locationId=${Cookies.get("locationId")}`,
+          {
+            headers: {
+              Authorization: `${Cookies.get("tokenType")} ${Cookies.get("accessToken")}`,
+            }, // [ ]: when httpOnly
+            signal: controller.signal,
+          }
+        );
         if (isMounted) {
-          setCteRec([res.data]);
-        }
-
-        res = await axiosPrivate.get("/cte/receive/2", {
-          headers: { Authorization: `Bearer ${auth?.accessToken}` },
-          signal: controller.signal,
-        });
-
-        if (isMounted) {
-          setCteRec((prevCteRec) => [...prevCteRec, res.data]);
-        }
-
-        res = await axiosPrivate.get("/cte/receive/3", {
-          headers: { Authorization: `Bearer ${auth?.accessToken}` },
-          signal: controller.signal,
-        });
-
-        if (isMounted) {
-          setCteRec((prevCteRec) => [...prevCteRec, res.data]);
+          setRecShip(res.data);
         }
       } catch (err) {
-        if (!CanceledError) {
-          console.log(err);
-        }
         if (
           isAxiosError(err) &&
-          (err.response?.status === 400 || err.response?.status === 401)
+          (err.response?.status === 401 || err.response?.status === 403)
         ) {
           navigate("/login", { state: { from: locate }, replace: true });
         }
@@ -69,6 +57,16 @@ const Transformation = () => {
       controller.abort();
     };
   }, [auth?.accessToken, axiosPrivate, navigate, locate]);
+
+  const handleViewClick = (ship: receivingShipment) => {
+    ship.type = "receiving";
+    setSelectedShip(ship);
+    setViewPop(true);
+  };
+
+  const handleClose = () => {
+    setViewPop(false);
+  };
 
   return (
     <div className="Dashboard">
@@ -93,14 +91,21 @@ const Transformation = () => {
                 </tr>
               </thead>
               <tbody className="table-body">
-                {cteRec.map((cte: cteReceive) => (
-                  <tr key={cte.id} className="table-body-row">
-                    <td className="details-body">{`${cte.quantity} ${cte.unitOfMeasure}`}</td>
-                    <td className="details-body">{cte.foodDesc}</td>
-                    <td className="details-body">{cte.locationId}</td>
-                    <td className="details-body">{cte.receiveDate}</td>
+                {receivingShipment.map((rec: receivingShipment) => (
+                  <tr key={rec.cteReceiveId} className="table-body-row">
+                    <td className="details-body">{`${rec.quantity} ${rec.unitOfMeasure}`}</td>
+                    <td className="details-body">{rec.prodDesc}</td>
+                    <td className="details-body">{`${rec.shipFromBus}, ${rec.shipFromCity}`}</td>
                     <td className="details-body">
-                      <button className="action-btn">View</button>
+                      {rec.receiveDate.toString()}
+                    </td>
+                    <td className="details-body">
+                      <button
+                        className="action-btn"
+                        onClick={() => handleViewClick(rec)}
+                      >
+                        View
+                      </button>
                     </td>
                     <td className="details-body">
                       <button className="prep-btn">Prep food</button>
@@ -112,6 +117,11 @@ const Transformation = () => {
           </div>
         </div>
       </div>
+      <SupShipView
+        supShip={selectedShip}
+        onClose={handleClose}
+        isVisible={viewPop}
+      />
     </div>
   );
 };

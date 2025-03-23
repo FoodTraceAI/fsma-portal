@@ -1,10 +1,12 @@
 import axios from "../api/axios";
 import useAuth from "./useAuth";
 import { AuthState } from "../types/types";
+import Cookies from "js-cookie"; //[ ]: when httpOnly
 
 const useRefreshToken = () => {
   const { auth, setAuth } = useAuth();
-  const refreshToken = auth?.refreshToken;
+  // const refreshToken = auth?.refreshToken;
+  const refreshToken = Cookies.get("refreshToken"); //[ ]: when httpOnly
 
   const refresh = async () => {
     const res = await axios.post(

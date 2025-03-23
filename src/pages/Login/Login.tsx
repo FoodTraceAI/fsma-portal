@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import axios from "../../api/axios";
 import "./Login.css";
+import Cookies from "js-cookie"; //[ ]: when httpOnly
 
 const LOGIN_URL = "/auth/login";
 
@@ -49,6 +50,18 @@ const Login = () => {
       console.log(JSON.stringify(res.data));
       const accessToken = res?.data?.accessToken;
       const refreshToken = res?.data?.refreshToken;
+
+
+      // [ ]: when httpOnly
+      {
+        Cookies.set("accessToken", (res.data.accessToken), { expires: 2 });
+        Cookies.set("refreshToken", (res.data.refreshToken), { expires: 2 });
+        Cookies.set("expiresIn", (res.data.expiresIn), { expires: 2 });
+        Cookies.set("tokenType", (res.data.tokenType), { expires: 2 });
+        Cookies.set("locationId", (res.data.locationId), { expires: 2 });
+        Cookies.set("fsmaUserId", (res.data.fsmaUserId), { expires: 2 });
+        Cookies.set("foodBusinessId", (res.data.foodBusinessId), { expires: 2 });
+      }
 
       setAuth({ email, password, accessToken, refreshToken });
       setEmail("");

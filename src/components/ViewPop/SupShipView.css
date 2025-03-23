@@ -1,5 +1,5 @@
 /* Pop-up overlay to cover the entire screen */
-.popup-overlay {
+.popup-overlay-ssc {
   position: fixed;
   top: 0;
   left: 0;
@@ -13,13 +13,24 @@
 }
 
 /* Pop-up content styling */
-.popup-content {
+.popup-content-ssc {
   background-color: white;
   padding: 20px;
   border-radius: 10px;
-  width: 400px;
+  width: fit-content;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   animation: fadeIn 0.3s ease; /* Optional: adds a fade-in effect */
+  position: relative;
+
+  .left-row-ssc {
+    padding-right: 5px;
+    text-align: right;
+  }
+
+  .right-row-ssc {
+    padding-left: 5px;
+    text-align: left;
+  }
 }
 
 .close-button {

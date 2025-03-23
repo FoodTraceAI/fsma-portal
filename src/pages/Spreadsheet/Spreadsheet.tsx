@@ -1,6 +1,5 @@
 // import axios from '../../api/axios';
-import { axiosPrivate } from "../../api/axios";
-import { isAxiosError } from "../../api/axios";
+import { axiosPrivate, isAxiosError } from "../../api/axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 

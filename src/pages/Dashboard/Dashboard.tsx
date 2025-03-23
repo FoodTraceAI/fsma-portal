@@ -4,10 +4,12 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 // import useRefreshToken from "../../hooks/useRefreshToken";
 import useAuth from "../../hooks/useAuth";
 import "./Dashboard.css";
-import { supShipCTE } from "../../types/types";
+import { arrivingShipment } from "../../types/types";
 import SupShipView from "../../components/ViewPop/SupShipView";
-import { isAxiosError, CanceledError } from "axios";
+import { isAxiosError } from "axios";
 import ImportPop from "../../components/ViewPop/ImportPop";
+import CreateSupShip from "../../components/ViewPop/CreateSupShip";
+import Cookies from "js-cookie"; //[ ]: when httpOnly
 
 const Dashboard = () => {
   const auth = useAuth().auth;
@@ -15,11 +17,13 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const locate = useLocation();
 
-  const [supShip, setSupShip] = useState<supShipCTE[]>([]);
-  const [location, setLocation] = useState<string[]>([]);
+  const [supShip, setSupShip] = useState<arrivingShipment[]>([]);
   const [viewPop, setViewPop] = useState(false);
   const [importPop, setImportPop] = useState(false);
-  const [selectedShip, setSelectedShip] = useState<supShipCTE | null>(null);
+  const [selectedShip, setSelectedShip] = useState<arrivingShipment | null>(
+    null
+  );
+  const [viewForm, setViewForm] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -27,37 +31,29 @@ const Dashboard = () => {
 
     const getData = async () => {
       try {
-        // console.log(auth?.accessToken, "accessToken");
-        // console.log(auth?.refreshToken, "refreshToken");
-        let res = await axiosPrivate.get("/supshipcte/1", {
-          headers: { Authorization: `Bearer ${auth?.accessToken}` },
-          signal: controller.signal,
-        });
-        // console.log(res.data);
+        //FIXME: take a look once the API is ready
+        const res = await axiosPrivate.get(
+          `/portal/arrivingshipments?locationId=${Cookies.get("locationId")}`,
+          {
+            // const res = await axiosPrivate.get(
+            //   `/portal/arrivingshipments?locationId=3`,
+            //   {
+            // headers: { Authorization: `Bearer ${auth?.accessToken}` }, // [ ]: when httpOnly
+            headers: {
+              Authorization: `${Cookies.get("tokenType")} ${Cookies.get("accessToken")}`,
+            }, // [ ]: when httpOnly
+            signal: controller.signal,
+          }
+        );
         if (isMounted) {
-          setSupShip([res.data]);
-        }
-
-        res = await axiosPrivate.get("/supshipcte/2", {
-          headers: { Authorization: `Bearer ${auth?.accessToken}` },
-          signal: controller.signal,
-        });
-        // console.log(res.data);
-        if (isMounted) {
-          setSupShip((prevSupShip) => [...prevSupShip, res.data]);
-        }
-
-        res = await axiosPrivate.get("/supshipcte/3", {
-          headers: { Authorization: `Bearer ${auth?.accessToken}` },
-          signal: controller.signal,
-        });
-        // console.log(res.data);
-        if (isMounted) {
-          setSupShip((prevSupShip) => [...prevSupShip, res.data]);
+          setSupShip(res.data);
         }
       } catch (err) {
         // console.error(err);
-        if (isAxiosError(err) && err.response?.status === 400) {
+        if (
+          isAxiosError(err) &&
+          (err.response?.status === 401 || err.response?.status === 403)
+        ) {
           navigate("/login", { state: { from: locate }, replace: true });
         }
       }
@@ -69,61 +65,10 @@ const Dashboard = () => {
       isMounted = false;
       controller.abort();
     };
-  }, [auth?.accessToken, auth.refreshToken, axiosPrivate, locate, navigate]);
+  }, [auth?.accessToken, axiosPrivate, locate, navigate]);
 
-  // console.log(supShip, "supShip");
-
-  useEffect(() => {
-    setLocation([]);
-    const controller = new AbortController();
-    let isMounted = true;
-    const getLocation = async (locationId: number) => {
-      try {
-        const res = await axiosPrivate.get(`/address/${locationId}`, {
-          headers: { Authorization: `Bearer ${auth?.accessToken}` },
-          signal: controller.signal,
-        });
-        return `${res.data.city}, ${res.data.state}`;
-      } catch (err) {
-        if (!CanceledError) {
-          console.log(err);
-        }
-        if (isAxiosError(err) && err.response?.status === 400) {
-          navigate("/login", { state: { from: locate }, replace: true });
-        }
-      }
-    };
-
-    const fetchLocation = async (locationId: number) => {
-      try {
-        const result = await getLocation(locationId);
-        if (isMounted) {
-          setLocation((prevLocation) => [
-            ...prevLocation,
-            result ?? "Unknown Location",
-          ]);
-        }
-      } catch (err) {
-        console.error("Error fetching location:", err);
-        if (isAxiosError(err) && err.response?.status === 400) {
-          navigate("/login", { state: { from: locate }, replace: true });
-        }
-      }
-    };
-
-    if (supShip.length > 0) {
-      supShip.forEach((ship) => {
-        fetchLocation(ship.shipFromLocationId);
-      });
-    }
-
-    return () => {
-      isMounted = false;
-      controller.abort();
-    };
-  }, [auth?.accessToken, axiosPrivate, locate, navigate, supShip]);
-
-  const handleViewClick = (ship: supShipCTE) => {
+  const handleViewClick = (ship: arrivingShipment) => {
+    ship.type = "arriving";
     setSelectedShip(ship);
     setViewPop(true);
   };
@@ -152,6 +97,14 @@ const Dashboard = () => {
         <div className="detail-table">
           <div className="table-topper">
             <div id="active">Supplier Shipping CTEs</div>
+            <button
+              className="create-sup-shipping-cte"
+              onClick={() => {
+                setViewForm(true);
+              }}
+            >
+              Create New CTE
+            </button>
           </div>
           <div className="table-container">
             <table className="details">
@@ -166,13 +119,13 @@ const Dashboard = () => {
                 </tr>
               </thead>
               <tbody className="table-body">
-                {supShip?.map((ship: supShipCTE) => (
-                  <tr key={ship.id} className="table-body-row">
+                {supShip?.map((ship: arrivingShipment) => (
+                  <tr key={ship.supShipCteId} className="table-body-row">
                     <td className="details-body">{`${ship.quantity} ${ship.unitOfMeasure}`}</td>
-                    <td className="details-body">{ship.foodDesc}</td>
-                    <td className="details-body">{location[ship.id - 1]}</td>
-                    <td className="details-body">{ship.shipDate}</td>
-                    <td className="details-body">{ship.supCteStatus}</td>
+                    <td className="details-body">{ship.prodDesc}</td>
+                    <td className="details-body">{ship.shipFromCity}</td>
+                    <td className="details-body">{ship.shipDate.toString()}</td>
+                    <td className="details-body">{ship.supShipStatus}</td>
                     <td className="details-body">
                       <button
                         className="action-btn"
@@ -194,6 +147,7 @@ const Dashboard = () => {
         isVisible={viewPop}
       />
       <ImportPop isOpen={importPop} onClose={handleImportClose} />
+      <CreateSupShip onClose={() => setViewForm(false)} isVisible={viewForm} />
     </div>
   );
 };

@@ -2,6 +2,7 @@ import { axiosPrivate } from "../api/axios";
 import { useEffect } from "react";
 import useRefreshToken from "./useRefreshToken";
 import useAuth from "./useAuth";
+import Cookies from "js-cookie"; //[ ]: when httpOnly
 
 const useAxiosPrivate = () => {
   const refresh = useRefreshToken();
@@ -24,7 +25,9 @@ const useAxiosPrivate = () => {
         if (error?.response?.status === 401 && !prevRequest?.sent) {
           prevRequest.sent = true;
           const newAccessToken = await refresh();
-          prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+          prevRequest.headers["Authorization"] = `Bearer ${newAccessToken.accessToken}`;
+          Cookies.set("accessToken", newAccessToken.accessToken, { expires: 2 }); //[ ]: when httpOnly
+          // console.log("newAccessToken: ", newAccessToken);
           return axiosPrivate(prevRequest);
         }
         return Promise.reject(error);
