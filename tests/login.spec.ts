@@ -1,12 +1,11 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./baseFixture";
 import dotenv from "dotenv";
 dotenv.config();
 
-const USER_EMAIL : string = process.env.TEST_USER_EMAIL!;
-const USER_PASSWORD : string = process.env.TEST_USER_PASSWORD!;
+const USER_EMAIL: string = process.env.TEST_USER_EMAIL!;
+const USER_PASSWORD: string = process.env.TEST_USER_PASSWORD!;
 
-
-test.describe("Login Page", () => {
+test.describe("Login Page", { tag: "@login" }, () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/");
   });

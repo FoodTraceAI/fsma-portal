@@ -1,33 +1,36 @@
 import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
-  // workers: '100%',
+  // workers: '200%',
   fullyParallel: true,
-  reporter: 'list',
+  reporter: "list",
   use: {
-    baseURL: 'http://localhost:5173',
+    baseURL: "http://localhost:5173",
   },
   webServer: {
-    command: 'npm run dev',
+    command: "npm run dev",
+    env: {
+      USE_VITE_PLUGIN_ISTANBUL: "1",
+    },
   },
   projects: [
     {
-      name: 'chromium',
+      name: "chromium",
       use: {
-        ...devices['Desktop Chrome'],
+        ...devices["Desktop Chrome"],
       },
     },
     {
-      name: 'firefox',
+      name: "firefox",
       use: {
-        ...devices['Desktop Firefox'],
+        ...devices["Desktop Firefox"],
       },
     },
     {
-      name: 'webkit',
+      name: "webkit",
       use: {
-        ...devices['Desktop Safari'],
+        ...devices["Desktop Safari"],
       },
     },
-  ],  
+  ],
 });

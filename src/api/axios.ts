@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // const BASE_URL = "http://localhost:8080/api/v1";
-const BASE_URL = import.meta.env.VITE_API_URL;
+const BASE_URL = import.meta.env.VITE_API_URL; // 'VITE_API_URL' is defined in .env file (aws url- ask Steve)
 console.log("BASE_URL: ", BASE_URL);
 
 /* This code snippet is creating an Axios instance with a base URL of "http://localhost:8080/api/v1"

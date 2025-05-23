@@ -1,3 +1,5 @@
+// landing page. also supplier shipment page.
+
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
@@ -9,7 +11,7 @@ import SupShipView from "../../components/ViewPop/SupShipView";
 import { isAxiosError } from "axios";
 import ImportPop from "../../components/ViewPop/ImportPop";
 import CreateSupShip from "../../components/ViewPop/CreateSupShip";
-import Cookies from "js-cookie"; //[ ]: when httpOnly
+import Cookies from "js-cookie"; //TODO: remove when httpOnly
 
 const Dashboard = () => {
   const auth = useAuth().auth;
@@ -38,10 +40,10 @@ const Dashboard = () => {
             // const res = await axiosPrivate.get(
             //   `/portal/arrivingshipments?locationId=3`,
             //   {
-            // headers: { Authorization: `Bearer ${auth?.accessToken}` }, // [ ]: when httpOnly
+            // headers: { Authorization: `Bearer ${auth?.accessToken}` }, // TODO: change when httpOnly
             headers: {
               Authorization: `${Cookies.get("tokenType")} ${Cookies.get("accessToken")}`,
-            }, // [ ]: when httpOnly
+            }, // TODO: change when httpOnly
             signal: controller.signal,
           }
         );

@@ -1,3 +1,5 @@
+// to import the CTE file. no API endpoint for this yet.
+
 import { useState } from "react";
 import "./ImportPop.css";
 

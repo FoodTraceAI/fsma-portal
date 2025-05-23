@@ -21,6 +21,7 @@ function App() {
         {["/", "/login"].map((path) => (
           <Route key={path} path={path} element={<Login />} />
         ))}
+        {/* [ ]: Find better routing names */}
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashboard/tcte" element={<Transformation />} />
         <Route path="/dashboard/scte" element={<Shipping />} />

@@ -1,3 +1,8 @@
+// Page to download sortable spreadsheets
+// The only functional part is "Generate" button
+// as the API does not take any parameters yet
+// so the "form" is not functional
+
 // import axios from '../../api/axios';
 import { axiosPrivate, isAxiosError } from "../../api/axios";
 import { useNavigate, useLocation } from "react-router-dom";

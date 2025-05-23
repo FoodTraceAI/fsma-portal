@@ -1,3 +1,5 @@
+// shipping cte page. to view and ship received ctes
+
 import { cteReceive } from "../../types/types";
 import "./Shipping.css";
 import { useState, useEffect } from "react";
@@ -93,24 +95,6 @@ const Shipping = () => {
                 </tr>
               </thead>
               <tbody className="table-body">
-                {/* <tr className="table-body-row">
-                  <td className="details-body">8 cases</td>
-                  <td className="details-body">
-                    Iceburg Lettuce Wrapped - 24 heads
-                  </td>
-                  <td className="details-body">Processor City, IL</td>
-                  <td className="details-body">2024-01-02</td>
-                  <td className="details-body">
-                    <button className="action-btn">View</button>
-                  </td>
-                  <td className="details-body">
-                    <button className="prep-btn">Ship food</button>
-                  </td>
-                </tr> */}
-
-                {/* 
-                  FIXME: take a look at it 
-                */}
                 {cteRec.map((cte) => (
                   <tr key={cte.id} className="table-body-row">
                     <td className="details-body">{`${cte.quantity} ${cte.unitOfMeasure}`}</td>
@@ -134,7 +118,7 @@ const Shipping = () => {
         receiveCTE = {selectedCTE as cteReceive}
         onClose = {handleClose}
         isVisible = {isVisible}
-        onSave = {() => console.log("SAVED")}
+        onSave = {() => console.log("SAVED")}  // TODO: Implement save functionality calling appropriate API
       />
     </div>
   );

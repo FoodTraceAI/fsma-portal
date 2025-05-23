@@ -1,3 +1,5 @@
+// modal for displaying shipment details
+
 import "./SupShipView.css";
 import {
   arrivingShipment,
@@ -17,16 +19,11 @@ const SupShipView = <T extends shipView>({
   onClose,
   isVisible,
 }: Props<T>) => {
-  // const [reShip, setRecShip] = useState(false);
 
   if (!isVisible) {
     return null;
   }
-  console.log(supShip?.type)
-
-  // if (supShip?.type == "receiving") {
-  //   setRecShip(true);
-  // }
+  // console.log(supShip?.type)
 
   return (
     <div>

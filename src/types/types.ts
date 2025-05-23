@@ -5,61 +5,6 @@ interface AuthState {
   refreshToken: string;
 }
 
-// interface arrivingShipments {
-//   supShipCteId: number;
-//   supShipStatus: string;
-//   sscc: string;
-//   logSerialNo: string;
-//   tlcId: number;
-//   tlcVal: string;
-//   tlcSrc: string;
-//   tlcSrcRef: string;
-//   quantity: number;
-//   unitOfMeasure: string;
-//   ftlItem: string;
-//   variety: string;
-//   prodDesc: string;
-//   shipToBus: string;
-//   shipToCity: string;
-//   shipFromBus: string;
-//   shipFromCity: string;
-//   shipDate: Date;
-//   referenceDocumentType: string;
-//   referenceDocumentNum: string;
-//   dateCreated: Date;
-//   dateModified: Date;
-//   isDeleted: boolean;
-//   dateDeleted: Date;
-//   authUsername: string;
-// }
-
-// interface receivedShipments {
-//   id: number;
-//   cteReceiveId: number;
-//   tlcId: number;
-//   tlcVal: string;
-//   tlcSrc: string;
-//   tlcSrcRef: string;
-//   quantity: number;
-//   unitOfMeasure: string;
-//   ftlItem: string;
-//   variety: string;
-//   prodDesc: string;
-//   receiveBus: string;
-//   receiveCity: string;
-//   shipFromBus: string;
-//   shipFromCity: string;
-//   receiveDate: Date;
-//   receiveTimeL: TimeRanges;
-//   referenceDocumentType: string;
-//   referenceDocumentNum: string;
-//   dateCreated: Date;
-//   dateModified: Date;
-//   isDeleted: boolean;
-//   dateDeleted: Date;
-//   authUsername: string;
-// }
-
 interface baseShipment {
   tlcId: number;
   tlcVal: string;
@@ -124,6 +69,26 @@ interface cteReceive {
   dateDeleted: Date;
 }
 
+interface supShipCTE {
+  sscc: string;
+  logSerialNo: string;
+  supCteStatus: string;
+  // cteReceiveId: number;
+  ftlItem: string;
+  variety: string;
+  tlcId: number;
+  quantity: number;
+  unitOfMeasure: string;
+  prodDesc: string;
+  shipToLocationId: number;
+  shipFromLocationId: number;
+  shipDate: Date;
+  tlcSourceId: number;
+  tlcSourceReference: string;
+  referenceDocumentType: string;
+  referenceDocumentNum: string;
+}
+
 interface tracePlan {
   id: number;
   issueDate: Date;
@@ -141,6 +106,7 @@ interface tracePlan {
 export type {
   AuthState,
   cteReceive,
+  supShipCTE,
   arrivingShipment,
   receivingShipment,
   tracePlan,

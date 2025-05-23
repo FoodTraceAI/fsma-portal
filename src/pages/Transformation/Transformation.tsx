@@ -1,3 +1,7 @@
+// Page for receiving shipments
+// "Transformation" refers to the process of preparing food for service, 
+// including receiving, storing, and preparing food items.
+
 import "./Transformation.css";
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -33,7 +37,7 @@ const Transformation = () => {
           {
             headers: {
               Authorization: `${Cookies.get("tokenType")} ${Cookies.get("accessToken")}`,
-            }, // [ ]: when httpOnly
+            }, // TODO: change when httpOnly
             signal: controller.signal,
           }
         );

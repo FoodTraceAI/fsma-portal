@@ -1,6 +1,52 @@
+// Page to view and edit traceability plan
+// API is yet to be implemented, so hard coded dummy data is used.
+
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+
+import { axiosPrivate, isAxiosError } from "../../api/axios";
+import useAuth from "../../hooks/useAuth";
+import Cookies from "js-cookie";
+import { tracePlan } from "../../types/types";
 import "./Traceability.css";
 
 const Traceability = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const auth = useAuth().auth;
+  const [plan, setPlan] = useState<tracePlan | null>(null);
+
+  // TODO: update when API is implemented
+  // useEffect(() => {
+  //   let isMounted = true;
+  //   const controller = new AbortController();
+  //   const getPlan = async () => {
+  //     try {
+  //       const res = await axiosPrivate.get("/traceplan/1", {
+  //         headers: { Authorization: `Bearer ${auth?.accessToken}` },
+  //         signal: controller.signal,
+  //       });
+  //       if (isMounted) {
+  //         setPlan(res.data);
+  //         // console.log(controller.signal);
+  //       }
+  //     } catch (err) {
+  //       console.error(err);
+  //       if (
+  //         isAxiosError(err) &&
+  //         (err.response?.status === 401 || err.response?.status === 403)
+  //       ) {
+  //         navigate("/login", { state: { from: location }, replace: true });
+  //       }
+  //     }
+  //   };
+  //   getPlan();
+  //   return () => {
+  //     isMounted = false;
+  //     controller.abort();
+  //   };
+  // }, [auth?.accessToken, plan, location, navigate]);
+
   return (
     <div className="base">
       <div className="plan-container">

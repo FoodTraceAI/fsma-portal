@@ -1,12 +1,12 @@
 import axios from "../api/axios";
 import useAuth from "./useAuth";
 import { AuthState } from "../types/types";
-import Cookies from "js-cookie"; //[ ]: when httpOnly
+import Cookies from "js-cookie"; //TODO: remove when httpOnly
 
 const useRefreshToken = () => {
   const { auth, setAuth } = useAuth();
   // const refreshToken = auth?.refreshToken;
-  const refreshToken = Cookies.get("refreshToken"); //[ ]: when httpOnly
+  const refreshToken = Cookies.get("refreshToken"); //TODO: change when httpOnly
 
   const refresh = async () => {
     const res = await axios.post(
@@ -14,6 +14,7 @@ const useRefreshToken = () => {
       { refreshToken },
       // {withCredentials: true}
     );
+    console.log(auth); // TODO: remove (not needed)
 
     /* The `setAuth` function is being called with a callback function that takes the previous
     `AuthState` as an argument and returns a new `AuthState` object. Inside the callback function:

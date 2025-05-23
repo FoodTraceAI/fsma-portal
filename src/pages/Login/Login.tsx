@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import axios from "../../api/axios";
 import "./Login.css";
-import Cookies from "js-cookie"; //[ ]: when httpOnly
+import Cookies from "js-cookie"; // TODO: remove when httpOnly
 
 const LOGIN_URL = "/auth/login";
 
@@ -52,7 +52,8 @@ const Login = () => {
       const refreshToken = res?.data?.refreshToken;
 
 
-      // [ ]: when httpOnly
+      // TODO: change when httpOnly
+      // DO NOT MOVE TO PROD WITHOUT HTTP ONLY
       {
         Cookies.set("accessToken", (res.data.accessToken), { expires: 2 });
         Cookies.set("refreshToken", (res.data.refreshToken), { expires: 2 });
